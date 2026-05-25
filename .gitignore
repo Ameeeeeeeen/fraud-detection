@@ -1,0 +1,22 @@
+# Data files
+data/*.parquet
+data/*.csv
+data/*.zip
+
+# Model files
+models/*.pkl
+models/*.joblib
+
+# Kaggle credentials
+kaggle.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Misc
+*.png
+optuna_study.pkl
+mlruns/
