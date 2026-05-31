@@ -1,6 +1,6 @@
 #  Real-Time Fraud Detection System
 
-> An end-to-end machine learning pipeline that detects payment fraud in real time — from raw data ingestion to a live API and monitoring dashboard.
+> An end-to-end machine learning pipeline that detects payment fraud in real time, from raw data ingestion to a live API and monitoring dashboard.
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue) ![PySpark](https://img.shields.io/badge/PySpark-3.5-orange) ![LightGBM](https://img.shields.io/badge/LightGBM-4.1-green) ![FastAPI](https://img.shields.io/badge/FastAPI-0.104-teal) ![Streamlit](https://img.shields.io/badge/Streamlit-1.28-red)
 
@@ -10,12 +10,12 @@
 
 Payment fraud costs the financial industry billions of dollars annually. Detecting it is genuinely hard:
 
-- Fraud is rare — in most datasets less than 5% of transactions are fraudulent, making standard accuracy a useless metric
-- Fraud patterns evolve constantly — a model trained today can degrade silently over months as fraudsters adapt
+- Fraud is rare : in most datasets less than 5% of transactions are fraudulent, making standard accuracy a useless metric
+- Fraud patterns evolve constantly : a model trained today can degrade silently over months as fraudsters adapt
 - Decisions must be made in milliseconds at the moment of transaction
 - Two types of mistakes carry different costs: missing a fraudster loses money, blocking a legitimate customer loses trust
 
-This project builds a system that addresses all four challenges — not just the modeling part.
+This project builds a system that addresses all four challenges, not just the modeling part.
 
 ---
 
@@ -210,13 +210,13 @@ Score a transaction and return SHAP feature contributions.
 ## 8. Technical Deep Dive
 
 ### Why time-based train/test split?
-Splitting by time (not randomly) simulates real deployment — the model learns from the past and is tested on the future. Random splitting would allow the model to train on future patterns, inflating performance metrics artificially.
+Splitting by time (not randomly) simulates real deployment. the model learns from the past and is tested on the future. Random splitting would allow the model to train on future patterns, inflating performance metrics artificially.
 
 ### Why target encoding for email domains?
-Email domain has 60+ unique values — too many for one-hot encoding. Target encoding replaces each domain with its historical fraud rate computed from training data only, preventing data leakage.
+Email domain has 60+ unique values which are too many for one-hot encoding. Target encoding replaces each domain with its historical fraud rate computed from training data only, preventing data leakage.
 
 ### Why threshold = 0.35 instead of 0.5?
-The default 0.5 threshold optimizes for accuracy. For fraud detection, recall matters more — missing a fraudster is costlier than a false alarm. Lowering the threshold to 0.35 increased recall from 74% to 84.5%.
+The default 0.5 threshold optimizes for accuracy. For fraud detection, recall matters more, missing a fraudster is costlier than a false alarm. Lowering the threshold to 0.35 increased recall from 74% to 84.5%.
 
 ### Why PCA on V columns?
 The dataset contains 292 anonymized V columns. PCA compressed them to 30 components capturing 99.9% of the variance — reducing noise, speeding up training, and preventing memory issues.
@@ -231,10 +231,10 @@ The dataset contains 292 anonymized V columns. PCA compressed them to 30 compone
 
 ## 9. Known Limitations
 
-- **DeviceInfo dominance** — the model relies heavily on device fingerprinting. Fraudsters using clean devices may evade detection. A feature ablation study is recommended before production deployment.
-- **Low precision** — 10.85% precision means 9 in 10 flagged transactions are legitimate. Acceptable for high-recall fraud systems but requires sufficient analyst capacity for investigation.
-- **Static threshold** — the 0.35 threshold was tuned on this dataset. Different business contexts (higher/lower fraud rates) would require re-tuning.
-- **19 high-risk features drifting** — statistical tests indicate model retraining is needed within 60 days of the training cutoff.
+- **DeviceInfo dominance** : the model relies heavily on device fingerprinting. Fraudsters using clean devices may evade detection. A feature ablation study is recommended before production deployment.
+- **Low precision** : 10.85% precision means 9 in 10 flagged transactions are legitimate. Acceptable for high-recall fraud systems but requires sufficient analyst capacity for investigation.
+- **Static threshold** : the 0.35 threshold was tuned on this dataset. Different business contexts (higher/lower fraud rates) would require re-tuning.
+- **19 high-risk features drifting** : statistical tests indicate model retraining is needed within 60 days of the training cutoff.
 
 ---
 
